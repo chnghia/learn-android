@@ -32,7 +32,7 @@ public class TimelineFragment extends ListFragment implements
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setEmptyText("Loading data...");
-        adapter = new SimpleCursorAdapter(getActivity(), R.layout.row, null,
+        adapter = new SimpleCursorAdapter(getActivity(), R.layout.list_item, null,
                 FROM, TO, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
         adapter.setViewBinder(new TimelineViewBinder());
 //        mAdapter = new SimpleCursorAdapter(getActivity(), R.layout.list_item,
@@ -59,7 +59,7 @@ public class TimelineFragment extends ListFragment implements
         @Override
         public boolean setViewValue(View view, Cursor cursor,
                                     int columnIndex) { //
-            if (view.getId() != R.id.text_created_at) //
+            if (view.getId() != R.id.list_item_text_created_at) //
                 return false;
             // Convert timestamp to relative time
             long timestamp = cursor.getLong(columnIndex); //

@@ -25,24 +25,4 @@ public class StatusActivity extends Activity {
                     .commit(); //
         }
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.status, menu);
-        return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.itemServiceStart:
-                startService(new Intent(this, RefreshService.class)); //
-                break;
-            case R.id.itemPrefs:
-                startActivity(new Intent(this, SettingsActivity.class));
-                break;
-            default:
-                return false;
-        }
-        return true;
-    }
 }

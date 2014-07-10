@@ -38,8 +38,8 @@ public class RefreshService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         SharedPreferences prefs = PreferenceManager
                 .getDefaultSharedPreferences(this); //
-        final String username = prefs.getString("username", "");
-        final String password = prefs.getString("password", "");
+        final String username = prefs.getString("username", "student");
+        final String password = prefs.getString("password", "password");
         // Check that username and password are not empty
         if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
             Toast.makeText(this,

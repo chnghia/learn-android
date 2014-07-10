@@ -20,7 +20,7 @@ public class DetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.list_item, null, false); //
-        textUser = (TextView) view.findViewById(R.id.list_item_text_user);
+        textUser = (TextView) view.findViewById(R.id    .list_item_text_user);
         textMessage = (TextView) view.findViewById(
                 R.id.list_item_text_message);
         textCreatedAt = (TextView) view
