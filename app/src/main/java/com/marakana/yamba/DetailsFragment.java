@@ -8,17 +8,20 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 public class DetailsFragment extends Fragment {
+    private static final String TAG = DetailsFragment.class.getSimpleName();
     private TextView textUser, textMessage, textCreatedAt;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView");
         View view = inflater.inflate(R.layout.list_item, null, false); //
         textUser = (TextView) view.findViewById(R.id    .list_item_text_user);
         textMessage = (TextView) view.findViewById(

@@ -20,16 +20,12 @@ import com.marakana.android.yamba.clientlib.YambaClientException;
 public class RefreshService extends IntentService {
     static final String TAG = "RefreshService";
 
-    public RefreshService() { //
+    public RefreshService() {
         super(TAG);
     }
 
     @Override
-    public IBinder onBind(Intent intent) { //
-        return null;
-    }
-    @Override
-    public void onCreate() { //
+    public void onCreate() {
         super.onCreate();
         Log.d(TAG, "onCreated");
     }
@@ -59,26 +55,18 @@ public class RefreshService extends IntentService {
             for (Status status : timeline) {
                 values.clear(); //
                 values.put(StatusContract.Column.ID, status.getId());
-                values.put(StatusContract.Column.USER,
-                        status.getUser());
-                values.put(StatusContract.Column.MESSAGE,
-                        status.getMessage());
-                values.put(StatusContract.Column.CREATED_AT, status
-                        .getCreatedAt().getTime());
+                values.put(StatusContract.Column.USER, status.getUser());
+                values.put(StatusContract.Column.MESSAGE, status.getMessage());
+                values.put(StatusContract.Column.CREATED_AT, status.getCreatedAt().getTime());
 
-                Uri uri = getContentResolver().insert(
-                        StatusContract.CONTENT_URI, values); //
+                Uri uri = getContentResolver().insert(StatusContract.CONTENT_URI, values);
                 if (uri != null) {
                     count++;
-                    Log.d(TAG,
-                            String.format("%s: %s", status.getUser(),
-                                    status.getMessage()));
+                    Log.d(TAG, String.format("%s: %s", status.getUser(), status.getMessage()));
                 }
 //                db.insertWithOnConflict(StatusContract.TABLE, null, values,
 //                        SQLiteDatabase.CONFLICT_IGNORE);
-                Log.d(TAG,
-                        String.format("%s: %s", status.getUser(),
-                                status.getMessage())); //
+                Log.d(TAG, String.format("%s: %s", status.getUser(), status.getMessage()));
             }
         } catch (YambaClientException e) {
             Log.e(TAG, "Failed to fetch the timeline", e);
@@ -87,7 +75,7 @@ public class RefreshService extends IntentService {
         return;
     }
     @Override
-    public void onDestroy() { //
+    public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroyed");
     }

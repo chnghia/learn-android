@@ -20,7 +20,15 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         prefs.registerOnSharedPreferenceChangeListener(this);
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        prefs.unregisterOnSharedPreferenceChangeListener(this);
+    }
+
     @Override
     public void onSharedPreferenceChanged (SharedPreferences sharedPreferences, String key) {
+        getActivity().sendBroadcast( new Intent("com.marakana.yamba.action.UPDATED_INTERVAL") );
     }
 }

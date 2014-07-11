@@ -72,21 +72,20 @@ public class StatusProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         Uri ret = null;
-        // Assert correct uri //
+        // Assert correct uri
         if (sURIMatcher.match(uri) != StatusContract.STATUS_DIR) {
             throw new IllegalArgumentException("Illegal uri: " + uri);
         }
-        SQLiteDatabase db = dbHelper.getWritableDatabase(); //
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
         long rowId = db.insertWithOnConflict(StatusContract.TABLE, null,
-                values, SQLiteDatabase.CONFLICT_IGNORE); //
+                values, SQLiteDatabase.CONFLICT_IGNORE);
         // Was insert successful?
-        if (rowId != -1) { //
+        if (rowId != -1) {
             long id = values.getAsLong(StatusContract.Column.ID);
-            ret = ContentUris.withAppendedId(uri, id); //
+            ret = ContentUris.withAppendedId(uri, id);
             Log.d(TAG, "inserted uri: " + ret);
             // Notify that data for this uri has changed
-            getContext().getContentResolver()
-                    .notifyChange(uri, null); //
+            getContext().getContentResolver().notifyChange(uri, null);
         }
         return ret;
     }
@@ -101,24 +100,22 @@ public class StatusProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection,
             String[] selectionArgs, String sortOrder) {
-        SQLiteQueryBuilder qb = new SQLiteQueryBuilder(); //
-        qb.setTables( StatusContract.TABLE ); //
-        switch (sURIMatcher.match(uri)) { //
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+        qb.setTables( StatusContract.TABLE );
+        switch (sURIMatcher.match(uri)) {
             case StatusContract.STATUS_DIR:
                 break;
             case StatusContract.STATUS_ITEM:
-                qb.appendWhere(StatusContract.Column.ID + "="
-                        + uri.getLastPathSegment()); //
+                qb.appendWhere(StatusContract.Column.ID + "=" + uri.getLastPathSegment());
                 break;
             default:
                 throw new IllegalArgumentException("Illegal uri: " + uri);
         }
         String orderBy = (TextUtils.isEmpty(sortOrder))
-                ? StatusContract.DEFAULT_SORT
-                : sortOrder; //
-        SQLiteDatabase db = dbHelper.getReadableDatabase(); //
+                ? StatusContract.DEFAULT_SORT : sortOrder;
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = qb.query(db, projection, selection, selectionArgs,
-                null, null, orderBy); //
+                null, null, orderBy);
         // register for uri changes
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
         Log.d(TAG, "queried records: "+cursor.getCount());
@@ -129,7 +126,7 @@ public class StatusProvider extends ContentProvider {
     public int update(Uri uri, ContentValues values, String selection,
             String[] selectionArgs) {
         String where;
-        switch (sURIMatcher.match(uri)) { //
+        switch (sURIMatcher.match(uri)) {
             case StatusContract.STATUS_DIR:
                 // so we count updated rows
                 where = selection;
@@ -139,14 +136,14 @@ public class StatusProvider extends ContentProvider {
                 where = StatusContract.Column.ID + "="
                         + id
                         + (TextUtils.isEmpty(selection) ? "" : " and ( "
-                        + selection + " )"); //
+                        + selection + " )");
                 break;
             default:
                 throw new IllegalArgumentException("Illegal uri: " + uri);
         }
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         int ret = db.update(StatusContract.TABLE, values,
-                where, selectionArgs); //
+                where, selectionArgs);
         if(ret>0) {
             // Notify that data for this URI has changed
             getContext().getContentResolver().notifyChange(uri, null);

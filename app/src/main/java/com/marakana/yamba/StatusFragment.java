@@ -1,10 +1,15 @@
 package com.marakana.yamba;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.util.Log;
@@ -66,30 +71,53 @@ public class StatusFragment extends Fragment implements OnClickListener {
 
     @Override
     public void onClick(View view) { //
-        String status = editStatus.getText().toString(); //
-        Log.d(TAG, "onClicked with status: " + status); //
+        String status = editStatus.getText().toString();
+        Log.d(TAG, "onClicked with status: " + status);
 
         new PostTask().execute(status);
     }
 
-    private final class PostTask extends AsyncTask<String, Void, String> { //
+    private final class PostTask extends AsyncTask<String, Void, String> {
+        private ProgressDialog progress;
 
         @Override
-        protected String doInBackground(String... params) { //
-            YambaClient yambaCloud = new YambaClient("student", "password");
+        protected void onPreExecute() {
+            progress = ProgressDialog.show(getActivity(), "Posting",
+                    "Please wait...");
+            progress.setCancelable(true);
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String username = prefs.getString("username", "");
+            String password = prefs.getString("password", "");
+
+            // Check that username and password are not empty
+            // If empty, Toast a message to set login info and bounce to
+            // SettingActivity
+            // Hint: TextUtils.
+            if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
+                getActivity().startActivity(
+                        new Intent(getActivity(), SettingsActivity.class));
+                return "Please update your username and password";
+            }
+
+            YambaClient yambaCloud = new YambaClient(username, password);
             try {
-                yambaCloud.postStatus( params[0] ); //
+                yambaCloud.postStatus( params[0] );
+                Log.d(TAG, "Successfully posted to the cloud: " + params[0]);
                 return "Successfully posted";
             } catch (YambaClientException e) {
+                Log.e(TAG, "Failed to post to the cloud", e);
                 e.printStackTrace();
                 return "Failed to post to yamba service";
             }
         }
         @Override
-        protected void onPostExecute(String result) { //
-            super.onPostExecute(result);
-            Toast.makeText(StatusFragment.this.getActivity(), result,
-                    Toast.LENGTH_LONG).show(); //
+        protected void onPostExecute(String result) {
+            progress.dismiss();
+            Toast.makeText(StatusFragment.this.getActivity(), result, Toast.LENGTH_LONG).show();
         }
     }
 }
