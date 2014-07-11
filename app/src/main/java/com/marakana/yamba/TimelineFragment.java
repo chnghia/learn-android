@@ -16,8 +16,7 @@ import android.widget.SimpleCursorAdapter.ViewBinder;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class TimelineFragment extends ListFragment implements
-        LoaderManager.LoaderCallbacks<Cursor> {
+public class TimelineFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = TimelineFragment.class.getSimpleName();
     private static final String[] FROM = { StatusContract.Column.USER,
             StatusContract.Column.MESSAGE, StatusContract.Column.CREATED_AT,
@@ -68,15 +67,15 @@ public class TimelineFragment extends ListFragment implements
     public void onListItemClick(ListView l, View v, int position, long id) {
         Log.d(TAG, "onListItemClick");
         // Get the details fragment
-        DetailsFragment fragment = (DetailsFragment) getFragmentManager()
-                .findFragmentById(R.id.fragment_details);
-        // Is details fragment visible?
-        if (fragment != null && fragment.isVisible()) {
-            fragment.updateView(id);
-        } else {
-            startActivity(new Intent(getActivity(), DetailsActivity.class)
-                    .putExtra(StatusContract.Column.ID, id)); //
-        }
+//        DetailsFragment fragment = (DetailsFragment) getFragmentManager()
+//                .findFragmentById(R.id.fragment_details);
+//        // Is details fragment visible?
+//        if (fragment != null && fragment.isVisible()) {
+//            fragment.updateView(id);
+//        } else {
+//            startActivity(new Intent(getActivity(), DetailsActivity.class)
+//                    .putExtra(StatusContract.Column.ID, id)); //
+//        }
     }
 
     // Executed on a non-UI thread
@@ -93,14 +92,14 @@ public class TimelineFragment extends ListFragment implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         // Get the details fragment
-        DetailsFragment fragment = (DetailsFragment) getFragmentManager()
-                .findFragmentById(R.id.fragment_details);
-
-        // Is details fragment visible?
-        if (fragment != null && fragment.isVisible() && cursor.getCount() == 0) {
-            fragment.updateView(-1);
-            Toast.makeText(getActivity(), "No data", Toast.LENGTH_LONG).show();
-        }
+//        DetailsFragment fragment = (DetailsFragment) getFragmentManager()
+//                .findFragmentById(R.id.fragment_details);
+//
+//        // Is details fragment visible?
+//        if (fragment != null && fragment.isVisible() && cursor.getCount() == 0) {
+//            fragment.updateView(-1);
+//            Toast.makeText(getActivity(), "No data", Toast.LENGTH_LONG).show();
+//        }
 
         Log.d(TAG, "onLoadFinished with cursor: " + cursor.getCount());
         mAdapter.swapCursor(cursor);

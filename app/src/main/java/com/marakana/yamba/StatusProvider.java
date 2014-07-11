@@ -14,8 +14,7 @@ import android.util.Log;
 public class StatusProvider extends ContentProvider {
     private static final String TAG = StatusProvider.class.getSimpleName();
     private DbHelper dbHelper;
-    private static final UriMatcher sURIMatcher = new UriMatcher(
-            UriMatcher.NO_MATCH);
+    private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     static {
         sURIMatcher.addURI(StatusContract.AUTHORITY, StatusContract.TABLE,
                 StatusContract.STATUS_DIR);
@@ -98,8 +97,7 @@ public class StatusProvider extends ContentProvider {
     }
 
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection,
-            String[] selectionArgs, String sortOrder) {
+    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables( StatusContract.TABLE );
         switch (sURIMatcher.match(uri)) {
@@ -123,8 +121,7 @@ public class StatusProvider extends ContentProvider {
     }
 
     @Override
-    public int update(Uri uri, ContentValues values, String selection,
-            String[] selectionArgs) {
+    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         String where;
         switch (sURIMatcher.match(uri)) {
             case StatusContract.STATUS_DIR:
